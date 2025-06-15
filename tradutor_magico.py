@@ -1,7 +1,3 @@
-import pyphen
-
-import tkinter as tk
-from tkinter import ttk
 
 MAGIC_ALPHABET = {
   'A': ('𐐅', 'to'),
@@ -35,9 +31,30 @@ MAGIC_ALPHABET = {
 
 
 def dividir_silabas(palavra):
-  dic = pyphen.Pyphen(lang='pt_BR')
-  silabas = dic.inserted(palavra).split('-')
-  return silabas
+  vogais = 'AEIOUYaeiouy'
+  resultado = []
+  silaba = ''
+  i = 0
+  while i < len(palavra):
+    c = palavra[i]
+    silaba += c
+    if c in vogais:
+      if i + 1 == len(palavra):
+        resultado.append(silaba)
+        silaba = ''
+      elif palavra[i + 1] not in vogais:
+        silaba += palavra[i + 1]
+        i += 1
+        if i + 1 == len(palavra) or palavra[i + 1] in vogais:
+          resultado.append(silaba)
+          silaba = ''
+      else:
+        resultado.append(silaba)
+        silaba = ''
+    i += 1
+  if silaba:
+    resultado.append(silaba)
+  return resultado
 
 
 def inverter_silaba(silaba):
